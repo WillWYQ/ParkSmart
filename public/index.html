@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ParkSmart Home</title>
+    <link rel="stylesheet" href="/main.css">
+    <style>
+        main {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .availability,
+        .trend,
+        .quick-actions,
+        .notices,
+        .about {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 2.5% 1%;
+            background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+        }
+
+        .availability .type {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .availability .type div {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .availability .type div .availabilityCircle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+
+        }
+
+        .availability .type {
+            text-align: center;
+            font-size: 2em;
+        }
+
+
+        .trend {
+            display: block;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+
+        .trend .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .trend .info div {
+            display: block;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .trend img {
+            width: 40%;
+            height: auto;
+            object-fit: contain;
+            margin-left: 10px;
+            border-radius: 10px;
+        }
+
+        .quick-actions {
+            display: block;
+        }
+
+        .quick-actions div {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .quick-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .notices ul {
+            padding-left: 20px;
+        }
+    </style>
+
+
+    <div class="navbar" id="headNav">
+        <h1>ParkSmart</h1>
+        <img src="/pic/Rose-Hulman-ParkSmart.png" alt="Rose-Hulman Institute of Technology ParkSmart logo">
+    </div>
+
+    <!-- CloudFlare Generated -->
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/10.12.5/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/10.12.5/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/10.12.5/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+</head>
+
+<body id="homePage">
+    <main>
+        <section class="availability section">
+            <h2>Current Availability</h2>
+            <div class="type">
+                <div id="studentOverallAvailability">
+                    <div style="background-color: lightblue" class="availabilityCircle">
+                        50%
+                    </div>
+                    <div>Student</div>
+                </div>
+                <div id="FSOverallAvailability">
+                    <div style="background-color: lightcoral" class="availabilityCircle">
+                        50%
+                    </div>
+                    <div>Faculty & Staff</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="trend section" id="trendSection">
+            <h2>Trend & Predictions</h2>
+            <div class="info">
+            </div>
+        </section>
+
+        <!-- TODO: Location Service Needed -->
+        <section class="quick-actions section">
+            <h2>Quick Actions</h2>
+            <div id="locatedParkingLot">Current Location: Speed Lot</div>
+            <div>
+                <button>Parked</button>
+                <button>Left</button>
+            </div>
+        </section>
+
+        <!-- TODO: Updated from Server -->
+        <section class="notices section">
+            <h2>Notices</h2>
+            <ul>
+                <li>Olin Hall Faculty/Staff/Visitor Parking Lot</li>
+
+            </ul>
+        </section>
+
+        <section class="about section">
+            <h2>About</h2>
+            <ul>
+                <li>ParkSmart</li>
+
+            </ul>
+        </section>
+    </main>
+
+    <iframe src="/bottomNav.html" style="width:100%; border:none;position: fixed; bottom: 0; left: 0;"></iframe>
+
+
+
+
+    <script>
+        const trendSection = document.getElementById('trendSection');
+        let currentSlide = 0;
+
+        // TODO: Updated from Server
+        const slides = [
+            {
+                time: '9:30 AM',
+                location: 'Speed Lot',
+                availability: '5 Available',
+                prediction: 'Full in 20 minutes',
+                img: 'https://via.placeholder.com/400X200',
+                id: "overallTrendSpeedLot",
+                alt: "Speed Lot Current Trend Graph"
+            },
+            {
+                time: '10:00 AM',
+                location: 'Myers Lot',
+                availability: '3 Available',
+                prediction: 'Full in 15 minutes',
+                img: 'https://via.placeholder.com/400X200',
+                id: "overallTrendSpeedLot",
+                alt: "Speed Lot Current Trend Graph"
+            }
+        ];
+
+        function updateTrendSection() {
+            const slide = slides[currentSlide];
+            trendSection.querySelector('.info').innerHTML = `
+                <div>
+                    <p>${slide.time} | ${slide.location}</p>
+                    <p>${slide.availability} | ${slide.prediction}</p>
+                </div>
+                <img src=${slide.img} >
+            `;
+            trendSection.querySelector('img').src = slide.img;
+            currentSlide = (currentSlide + 1) % slides.length;
+        }
+
+        updateTrendSection()
+        setInterval(updateTrendSection, 5000);
+    </script>
+    <script src="/main.js"></script>
+
+</body>
+
+</html>

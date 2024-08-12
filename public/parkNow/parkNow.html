@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Park Now</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/main.css">
+    <style>
+        .parking-lots {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .parking-lots .lot-type {
+            font-weight: bold;
+            margin-top: 1.5%;
+            margin-bottom: 1.1%;
+        }
+
+        .parking-lots .lot-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5% 0;
+            border-bottom: 1px solid #ddd;
+            align-items: center;
+        }
+
+        .parking-lots .lot-item:last-child {
+            border-bottom: none;
+        }
+
+        .lot-arrow {
+            color: #880000;
+        }
+
+        #parkingLotFilter {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+
+    <div class="navbar" id="headNav">
+        <h1>ParkSmart</h1>
+        <img src="/pic/Rose-Hulman-ParkSmart.png" alt="Rose-Hulman Institute of Technology ParkSmart logo">
+    </div>
+</head>
+
+<body id="parkNowPage">
+
+    <div class="list-container">
+        <div class="page-subheader">
+            <h1>Park Now</h1>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" class="form-control" placeholder="Search">
+        </div>
+
+        <div class="suggestion">
+            <p>Sat 10 RHIT 12:41 AM</p>
+            <p>Students Are Allowed to Park</p>
+            <h2>Any Parking Lot</h2>
+        </div>
+
+        <div class="parking-lots">
+
+            <div id="parkingLotFilter">
+                <h5>Parking Lot Type </h5>
+                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    ALL
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Students</a></li>
+                    <li><a class="dropdown-item" href="#">Faculty & Stuff</a></li>
+                </ul>
+            </div>
+
+
+            <!-- Student Parking Lots -->
+            <div class="lot-type h4">Student Parking Lots</div>
+            <div class="lot-item">
+                <span>Speed Lot</span>
+                <span>97% <i class="fas fa-chevron-right lot-arrow"></i></span>
+            </div>
+            <div class="lot-item">
+                <span>BIC & KIC Lot</span>
+                <span>100% <i class="fas fa-chevron-right lot-arrow"></i></span>
+            </div>
+
+            <!-- Faculty/Staff Parking Lots -->
+            <div class="lot-type h4">Faculty/Staff Parking Lots</div>
+            <div class="lot-item">
+                <span>Myers Lot</span>
+                <span>97% <i class="fas fa-chevron-right lot-arrow"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <iframe src="/bottomNav.html"
+        style="width:100%; border:none; border: none; position: fixed; bottom: 0; left: 0;"></iframe>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="/main.js"></script>
+
+</body>
+
+</html>
