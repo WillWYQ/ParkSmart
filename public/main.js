@@ -64,20 +64,19 @@ parkSmart.AuthManager = class {
     }
 
 }
-
 parkSmart.ParkLotManager = class {
     constructor() {
+        console.log("ParkLotManager Created");
         parkSmart.parkingLotsList = [];
         this.updateParkingLots();
     }
 
-    // Method to fetch all parking lot information
-    updateParkingLots() {
-        const snapshot = db.collection(parkSmart.FB_Collection_ParkLot_Info).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
+    async updateParkingLots() {
+        try {
+            const snapshot = await db.collection(parkSmart.FB_Collection_ParkLot_Info).get();
+            snapshot.forEach((doc) => {
                 const data = doc.data();
                 parkSmart.parkingLotsList.push({
-                    id: doc.id,
                     googleMapLink: data[parkSmart.FB_Key_ParkLot_Info_map],
                     name: data[parkSmart.FB_Key_ParkLot_Info_name],
                     location: data[parkSmart.FB_Key_ParkLot_Info_location],
@@ -85,31 +84,29 @@ parkSmart.ParkLotManager = class {
                     totalSpace: data[parkSmart.FB_Key_ParkLot_Info_total],
                     type: data[parkSmart.FB_Key_ParkLot_Info_type]
                 });
+                console.log(`Get Lot Item ${data[parkSmart.FB_Key_ParkLot_Info_name]}`);
             });
-        });
 
+            new parkSmart.ParkNowManager();
+        } catch (error) {
+            console.error("Error updating parking lots: ", error);
+        }
     }
-    
-    async displayParkingLots() {
-        console.log("Parking Lots Information:");
-        parkSmart.parkingLotsList.forEach(lot => {
-            console.log(`${lot.name} - Status: ${lot.status}, Total Spaces: ${lot.totalSpace}`);
-        });
-    }
-
-}
+};
 
 parkSmart.main = function () {
     console.log("Ready");
 
-    parkSmart.authManager = new parkSmart.AuthManager();
+    parkSmart.authManager = parkSmart.authManager ||  new parkSmart.AuthManager() ;
 
     parkSmart.authManager.beginListening(() => {
         console.log("isSignedIn = ", parkSmart.authManager.isSignedIn);
 
     });
 
-    parkSmart.parkLotManager = new parkSmart.ParkLotManager();
+    parkSmart.parkLotManager = parkSmart.parkLotManager || new parkSmart.ParkLotManager();
 };
 
+
 parkSmart.main();
+
