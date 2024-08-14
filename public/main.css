@@ -43,12 +43,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    min-height: 90vh;
     overflow: auto;
     background-color: transparent;
 }
 
-main:last-child{
+main:last-child {
     margin-bottom: 10%;
 }
 
@@ -114,8 +114,9 @@ h2 {
 h3 {
     font-size: 1.8em;
 }
-a{
-    text-decoration: none; 
+
+a {
+    text-decoration: none;
     color: inherit;
 }
 
@@ -128,6 +129,15 @@ a{
     color: #a635d6;
     text-decoration: none;
     font-size: 1.5em;
+}
+
+#bottomNav {
+    width: 100%;
+    border: none;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 @media (min-width: 1200px) {
