@@ -7,109 +7,56 @@
     <title>Account Settings</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../account/account.css">
     <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
+        
 
-        .settings-container {
-            max-width: 400px;
-            width: 100%;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .settings-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .settings-header a {
-            color: #007bff;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .settings-header img {
-            height: 50px;
-        }
-
-        .account-info {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: #8b0000;
-            border-radius: 10px;
-            color: #fff;
-            margin-bottom: 20px;
-        }
-
-        .account-info img {
-            height: 50px;
-            margin-right: 15px;
-        }
-
-        .settings-list .list-group-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .settings-list .list-group-item img {
-            height: 25px;
-            margin-right: 15px;
-        }
+        
     </style>
+
+    <header class="navbar" id="headNav">
+        <h1>ParkSmart</h1>
+        <img src="/pic/Rose-Hulman-ParkSmart.png" alt="Rose-Hulman Institute of Technology ParkSmart logo">
+    </header>
 </head>
 
 <body>
 
-    <div class="settings-container">
-        <div class="settings-header">
-            <a href="#myAccount"><i class="fas fa-arrow-left"></i> My Account</a>
-            <h1>Account Settings</h1>
-            <img src="/path/to/rose-hulman-logo.png" alt="Rose-Hulman Logo">
+    <div class="page-container">
+        <div class="page-subheader">
+            <a class="back-link" href="/account/myAccount.html"><i class="fas fa-arrow-left"></i> My Account</a>
+            <h2 class="centered-heading">Account Settings</h1>
         </div>
 
         <div class="account-info">
-            <img src="/path/to/rose-hulman-logo.png" alt="User Profile Picture">
+            <img id="userPhoto" src="/pic/Rose-Hulman-ParkSmart.png" alt="User Profile Picture">
             <div>
-                <h5>ParkSmart</h5>
-                <p>ParkSmart@rose-hulman.edu</p>
+                <h5 id="name">ParkSmart</h5>
+                <p id="email">ParkSmart@rose-hulman.edu</p>
             </div>
         </div>
 
-        <ul class="list-group settings-list">
+        <ul class="list-group account-list">
             <li class="list-group-item">
                 <div>
-                    <img src="https://img.icons8.com/ios-filled/50/000000/camera.png" alt="Profile Icon">
+                    <i class="fas fa-camera"></i>
                     Update Profile Pic
                 </div>
             </li>
             <li class="list-group-item">
                 <div>
-                    <img src="https://img.icons8.com/ios-filled/50/000000/bell.png" alt="Notifications Icon">
+                    <i class="fas fa-bell"></i>
                     Notifications
                 </div>
             </li>
             <li class="list-group-item">
                 <div>
-                    <img src="https://img.icons8.com/ios-filled/50/000000/settings.png" alt="Preferences Icon">
+                    <i class="fas fa-cog"></i>
                     Parking Preference
                 </div>
             </li>
         </ul>
+        
     </div>
 
     <iframe src="/bottomNav.html"

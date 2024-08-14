@@ -1,7 +1,6 @@
 // accountSetting.js
 
 parkSmart.pageRedirects = function () {
-    console.log("Redirecting");
 	if (document.querySelector("#loginPage")) {
         console.log("You are on loginPage");
 		if (parkSmart.authManager.isSignedIn) {

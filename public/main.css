@@ -45,11 +45,20 @@ body {
     align-items: center;
     height: 100vh;
     overflow: auto;
+    background-color: transparent;
 }
 
-body:last-child{
+main:last-child{
     margin-bottom: 10%;
 }
+
+.centered-heading {
+    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 
 .page-subheader {
     display: flex;
@@ -62,6 +71,7 @@ body:last-child{
 .page-subheader img {
     height: 40px;
 }
+
 
 .search-bar {
     margin-bottom: 4%;
@@ -103,6 +113,10 @@ h2 {
 
 h3 {
     font-size: 1.8em;
+}
+a{
+    text-decoration: none; 
+    color: inherit;
 }
 
 .map {

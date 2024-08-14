@@ -1,0 +1,30 @@
+.account-info {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #8b0000;
+    border-radius: 10px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.account-info img {
+    height: 50px;
+    margin-right: 15px;
+}
+
+.account-list .list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.account-list .list-group-item {
+    width: 100%;
+    text-decoration: none;
+}
+
+
+.account-list .list-group-item i {
+    height: 25px;
+    margin-right: 15px;
+}

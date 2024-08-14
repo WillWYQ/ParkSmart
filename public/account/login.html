@@ -65,9 +65,10 @@
         </div>
 
         <button id="rosefireButton" type="button" class="btn">Sign in with Rosefire</button>
-
+        <!-- disabled the firebaseui since I don't want -->
+<!-- 
         <div id="firebaseui-auth-container"></div>
-        <div id="loader">Loading...</div>
+        <div id="loader">Loading...</div> -->
 
 
 
@@ -77,21 +78,22 @@
     <iframe src="/bottomNav.html" style="width:100%; border:none; position: fixed; bottom: 0; left: 0;"
         loading="lazy"></iframe>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-        <script src="/__/firebase/7.18.0/firebase-app.js"></script>
-        <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
-        <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
-        <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
-        <script src="/__/firebase/init.js"></script>
-        <script src="/account/rosefire.min.js" defer></script>
-    
-        <script src="/main.js"></script>
-        <script src="/account/accountSetting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script> -->
+    <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="/account/rosefire.min.js" defer></script>
+
+    <script src="/main.js"></script>
+    <script src="/account/accountSetting.js"></script>
 
 
     <script>
+        const db = firebase.firestore();
 
         parkSmart.signInByRoseFire = function () {
             Rosefire.signIn("2963f874-026b-4207-b9e3-1a5c6643a1b1", (err, rfUser) => {
@@ -108,6 +110,22 @@
                         console.error("signInWithCustomToken error", error.message);
                     }
                 });
+
+                const userData = {
+                    [parkSmart.FB_Key_username]: rfUser.username,
+                    [parkSmart.FB_Key_email]: rfUser.email,
+                    [parkSmart.FB_Key_group]: rfUser.group,
+                    [parkSmart.FB_Key_name]: rfUser.name,
+
+                }
+
+                db.collection(parkSmart.FB_Collection_user).doc(rfUser.username).set(userData,{ merge: true })
+                    .then(() => {
+                        console.log("Document successfully written!");
+                    })
+                    .catch((error) => {
+                        console.error("Error writing document: ", error);
+                    });
             });
         };
 
@@ -155,7 +173,7 @@
                 document.querySelector("#rosefireButton").addEventListener('click', () => {
                     parkSmart.signInByRoseFire();
                 });
-                parkSmart.startFirebaseUI();
+                // parkSmart.startFirebaseUI();
             }
         }
 
@@ -165,11 +183,9 @@
                 parkSmart.authManager = new parkSmart.AuthManager();
             }
 
-            // Ensure that we wait for the auth state to be resolved before redirecting
             parkSmart.authManager.beginListening(() => {
                 console.log("isSignedIn = ", parkSmart.authManager.isSignedIn);
 
-                // Now we can safely call the pageRedirects function
                 parkSmart.pageRedirects();
             });
 
