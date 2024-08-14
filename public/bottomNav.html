@@ -5,11 +5,14 @@
     <a href="/notice/noticelist.html" target="_top" id="noticeLink"><i class="fas fa-bell"></i>Notice</a>
     <a href="/parkNow/parkNow.html" target="_top" id="parkNowLink"><i class="fas fa-car"></i>Park Now</a>
     <a href="/" target="_top" id="homeLink"><i class="fas fa-home"></i>Home</a>
-    <a href="/history-trend" target="_top" id="historyTrendLink"><i class="fas fa-chart-line"></i>History & Trend</a>
-    <a href="/account" target="_top" id="accountLink"><i class="fas fa-user"></i>Account</a>
+    <a href="/history-trend" target="_top" id="historyTrendLink"><i class="fas fa-chart-line"></i>History</a>
+    <a href="/account/login.html" target="_top" id="accountLink"><i class="fas fa-user"></i>Account</a>
 </nav>
 
 <style>
+    body{
+        
+    }
     nav {
         display: flex;
         justify-content: space-around;
@@ -19,6 +22,9 @@
         background-color: #f5f5f5;
         border-top: 1px solid #ddd;
         padding: 10px 0;
+        word-wrap: break-word;
+        margin-top: 0%;
+        height: fit-content;
     }
 
     nav a {
@@ -64,6 +70,10 @@
             historyTrendPage: 'historyTrendLink',
             accountPage: 'accountLink'
         };
+
+        const subPageMap = {
+            parkNowSubPage: 'parkNowLink',
+        }
 
         // Add the active class to the corresponding link
         const activeLinkId = linkMap[parentBodyId];

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Lot Detail | ParkSmart</title>
+    <link rel="icon" href="/pic/Rose-Hulman-ParkSmart.png" type="image/png">
+    <link rel="stylesheet" href="/main.css">
+    <style>
+        
+        .lot-info {
+            background-color: #e0f7fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .lot-info img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .lot-info .availability {
+            font-size: 48px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .lot-info .availability-status {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .lot-info .bar {
+            width: 100%;
+            height: 5px;
+            background-color: #007bff;
+            margin-top: 10px;
+        }
+
+        .report-section {
+            background-color: #ffe4b5;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .report-section select,
+        .report-section input[type="text"] {
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .report-section button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="navbar" id="headNav">
+        <h1>ParkSmart</h1>
+        <img src="/pic/Rose-Hulman-ParkSmart.png" alt="Rose-Hulman Institute of Technology ParkSmart logo">
+    </div>
+</head>
+
+<body id="parkNowSubPage">
+
+    <div class="page-container">
+
+        <div class="page-subheader">
+            <a href="#" class="back-link"><i class="fas fa-arrow-left"></i> Park Now</a>
+            <div class="h2" id="parkingLotTitle">Speed Lot</div>
+        </div>
+
+        <div class="lot-info">
+
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1371.7212450435743!2d-87.32574486030875!3d39.48265874678932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x886d6e415ed50963%3A0xce0c40b806f2b659!2sParking%20lot%2C%20Rose%20Hulman%20Institute%20Rd%2C%20Terre%20Haute%2C%20IN%2047803!5e0!3m2!1sen!2sus!4v1723510640657!5m2!1sen!2sus"
+                class="map" allowfullscreen="" loading="lazy"></iframe>
+
+
+            <div class="availability-status">
+                CURRENT AVAILABLE<br>
+                Reported by PubSafe at 12:30 PM on Mon 23
+            </div>
+
+            <div class="bar"></div>
+            <div class="d-flex justify-content-between mt-3">
+                <span>Empty</span>
+                <span>Full</span>
+            </div>
+        </div>
+
+
+        <div class="report-section">
+
+            <label for="feelings">Report by Feelings</label>
+            <select id="feelings" class="form-select">
+                <option value="">Please Choose</option>
+                <option value="safe">Safe</option>
+                <option value="crowded">Crowded</option>
+                <option value="empty">Empty</option>
+            </select>
+
+            <label for="detailNumber">You Got Detail Number</label>
+            <input type="text" id="detailNumber" class="form-control" placeholder="Value">
+
+            <button type="submit">Report</button>
+        </div>
+
+
+
+
+
+    </div>
+
+    <iframe src="/bottomNav.html" style="width:100%; border:none; position: fixed; bottom: 0; left: 0;"></iframe>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="/account/rosefire.min.js" defer></script>
+
+    <script src="/main.js"></script>
+
+</body>
+
+</html>
