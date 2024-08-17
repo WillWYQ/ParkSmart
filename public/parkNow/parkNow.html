@@ -40,70 +40,54 @@
         #parkingLotFilter {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
     </style>
+</head>
+
+<body id="parkNowPage">
 
     <div class="navbar" id="headNav">
         <h1>ParkSmart</h1>
         <img src="/pic/Rose-Hulman-ParkSmart.png" alt="Rose-Hulman Institute of Technology ParkSmart logo">
     </div>
-</head>
-
-<body id="parkNowPage">
 
     <div class="page-container">
         <div class="page-subheader">
             <h1>Park Now</h1>
         </div>
 
-        <div class="search-bar">
-            <input type="text" class="form-control" placeholder="Search">
-        </div>
+
 
         <div class="suggestion">
-            <p>Sat 10 RHIT 12:41 AM</p>
+            <p id="timeNow">Now</p>
             <p>Students Are Allowed to Park</p>
-            <h2>Any Parking Lot</h2>
+            <h2 id="parkLotRule">Any Parking Lot</h2>
+        </div>
+
+
+
+        <div id="parkingLotFilter">
+            <h5>Parking Lot Type</h5><button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                ALL
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" onclick="filterParkingLots('All')">All</a></li>
+                <li><a class="dropdown-item" onclick="filterParkingLots('Student')">Students</a></li>
+                <li><a class="dropdown-item" onclick="filterParkingLots('Faculty')">Faculty & Staff</a></li>
+            </ul>
+        </div>
+
+        <div class="search-bar">
+            <input class="form-control" id="searchInput" type="text" placeholder="Search">
         </div>
 
         <div class="parking-lots">
-
-            <div id="parkingLotFilter">
-                <h5>Parking Lot Type </h5>
-                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    ALL
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Students</a></li>
-                    <li><a class="dropdown-item" href="#">Faculty & Stuff</a></li>
-                </ul>
-            </div>
-
-
-            <!-- Student Parking Lots -->
-            <div class="lot-type h4">Student Parking Lots</div>
-            <div class="lot-item">
-                <span>Speed Lot</span>
-                <span>97% <i class="fas fa-chevron-right lot-arrow"></i></span>
-            </div>
-            <div class="lot-item">
-                <span>BIC & KIC Lot</span>
-                <span>100% <i class="fas fa-chevron-right lot-arrow"></i></span>
-            </div>
-
-            <!-- Faculty/Staff Parking Lots -->
-            <div class="lot-type h4">Faculty/Staff Parking Lots</div>
-            <div class="lot-item">
-                <span>Myers Lot</span>
-                <span>97% <i class="fas fa-chevron-right lot-arrow"></i></span>
-            </div>
+            <!-- Dynamic content-->
         </div>
+        
     </div>
-
-    <iframe src="/bottomNav.html"
-        style="width:100%; border:none; border: none; position: fixed; bottom: 0; left: 0;">
-    </iframe>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
@@ -112,16 +96,42 @@
     <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
     <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
     <script src="/__/firebase/init.js"></script>
-    <script src="/account/rosefire.min.js" defer></script>
+    <script src="/account/rosefire.min.js"></script>
 
     <script src="/main.js"></script>
     <script src="/parkNow/parkNow.js"></script>
     <script>
-        //  document.addEventListener('DOMContentLoaded', () => {
-        //     new parkSmart.ParkNowManager();
-        //  });
-    </script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("Page Loaded");
+            parkSmart.main();
+            parkSmart.parkNowManager = new parkSmart.ParkNowManager(true, true); // Show both Student and Faculty lots by default
+        });
 
+        document.querySelector("#searchInput").addEventListener('input', function () {
+            const query = searchInput.value.toLowerCase();
+            parkSmart.parkNowManager.filterParkingLotsBySearch(query);
+        });
+
+
+        function filterParkingLots(type) {
+
+            if (type === 'All') {
+                parkSmart.parkNowManager.showStudent = true;
+                parkSmart.parkNowManager.showFS = true;
+            } else if (type === 'Student') {
+                parkSmart.parkNowManager.showStudent = true;
+                parkSmart.parkNowManager.showFS = false;
+            } else if (type === 'Faculty') {
+                parkSmart.parkNowManager.showStudent = false;
+                parkSmart.parkNowManager.showFS = true;
+            }
+            parkSmart.parkNowManager.populateParkingLots();
+            console.log(`Filtering by: ${type}`);
+        }
+
+
+    </script>
 </body>
+
 
 </html>

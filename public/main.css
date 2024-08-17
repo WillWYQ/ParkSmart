@@ -3,14 +3,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 header {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    padding: 40px;
-    padding-bottom: 5%;
     background-color: #f5f5f5;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    margin-bottom: 10%;
+    padding-bottom: 5%;
+    padding: 2%;
+    width: 100%;
+    display: flex;
 }
 
 #headNav {
@@ -24,7 +24,7 @@ header {
     align-items: center;
     background-color: #f5f5f5;
     border-bottom: 1px solid #ddd;
-
+    margin-bottom: 10%;
 }
 
 #headNav h1 {
@@ -38,12 +38,14 @@ header {
 
 body {
     font-family: "Share Tech Mono", monospace, 'Arial Narrow', Arial, sans-serif;
+    padding-bottom: 70px;
     margin-top: 10%;
+    margin-bottom: 15%;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 90vh;
+    min-height: 100vh;
     overflow: auto;
     background-color: transparent;
 }
@@ -59,19 +61,17 @@ main:last-child {
     transform: translateX(-50%);
 }
 
-
 .page-subheader {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 3%;
     margin-top: 10%;
 }
 
 .page-subheader img {
-    height: 40px;
+    height: 5%;
 }
-
 
 .search-bar {
     margin-bottom: 4%;
@@ -84,11 +84,14 @@ main:last-child {
 .suggestion {
     text-align: center;
     background: linear-gradient(135deg, rgba(10, 15, 41, 1) 0%, rgba(45, 0, 77, 1) 50%, rgba(255, 0, 122, 1) 100%);
-    border-radius: 10px;
-    padding: 15px;
+    border-radius: 10%;
+    padding: 5%;
     color: #fff;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin: 5% auto;
+    align-self: center;
+    justify-self: center;
+
 }
 
 button {
@@ -131,13 +134,55 @@ a {
     font-size: 1.5em;
 }
 
+#timeNow {
+    text-wrap: balance;
+}
+
 #bottomNav {
     width: 100%;
     border: none;
-    position: sticky;
+    position: fixed;
     bottom: 0;
     left: 0;
     z-index: 1000;
+    margin: 0%;
+    margin-top: 5%;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    align-items: end;
+    max-height: 10%;
+    padding: 1%
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    z-index: 1000;
+}
+
+nav a {
+    text-decoration: none;
+    color: #000;
+    font-size: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav a.active {
+    font-weight: bold;
+    color: #880000;
+    pointer-events: none;
+}
+
+nav i {
+    font-size: 20px;
+    margin-bottom: 5px;
 }
 
 @media (min-width: 1200px) {

@@ -15,14 +15,16 @@
         }
 
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 3%;
         }
 
         .availability,
         .trend,
         .quick-actions,
         .notices,
-        .about {
+        .about,
+        .suggestion {
+            color: #fff;
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -34,28 +36,34 @@
         .availability .type {
             display: flex;
             justify-content: space-around;
+            text-align: center;
+            font-size: 2em;
         }
 
-        .availability .type div {
+        .availability .type>div {
             width: 50%;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
+            margin: 0 auto;
         }
 
-        .availability .type div .availabilityCircle {
+        .availability .availabilityCircle {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 100px;
             height: 100px;
             border-radius: 50%;
-
+            margin: 0 auto;
         }
 
-        .availability .type {
-            text-align: center;
-            font-size: 2em;
+        .availability .availableLotsList {
+            width: 100%;
+            font-size: 0.4em;
+        }
+
+        .availability .availableLotsList>div {
+            width: 100%;
+            font-size: 0.8em;
+            margin: 0;
         }
 
 
@@ -122,39 +130,52 @@
 
 <body id="homePage">
     <main>
+
+        <section class="suggestion section">
+            <p id="timeNow">Now</p>
+            <p>Students Are Allowed to Park</p>
+            <h2 id="parkLotRule">Any Parking Lot</h2>
+        </section>
+
+
         <section class="availability section">
             <h2>Current Availability</h2>
             <div class="type">
                 <div id="studentOverallAvailability">
-                    <div style="background-color: lightblue" class="availabilityCircle">
+                    <div style="background-color: lightblue" class="availabilityCircle"
+                        id="studentAvailableSpotsPercentenge">
                         50%
                     </div>
                     <div>Student</div>
+                    <div class="availableLotsList" id="studentParkingLotsList"></div>
                 </div>
+
                 <div id="FSOverallAvailability">
-                    <div style="background-color: lightcoral" class="availabilityCircle">
+                    <div style="background-color: lightcoral" class="availabilityCircle"
+                        id="fsAvailableSpotsPercentenge">
                         50%
                     </div>
                     <div>Faculty & Staff</div>
+                    <div class="availableLotsList" id="FSParkingLotsList"></div>
                 </div>
             </div>
         </section>
 
-        <section class="trend section" id="trendSection">
+        <!-- <section class="trend section" id="trendSection">
             <h2>Trend & Predictions</h2>
             <div class="info" id="trendInfo">
             </div>
         </section>
 
-        <!-- TODO: Location Service Needed -->
-        <section class="quick-actions section">
+        TODO: Location Service Needed -->
+        <!-- <section class="quick-actions section">
             <h2>Quick Actions</h2>
             <div id="locatedParkingLot">Current Location: Speed Lot</div>
             <div>
                 <button>Parked</button>
                 <button>Left</button>
             </div>
-        </section>
+        </section> -->
 
         <!-- TODO: Updated from Server -->
         <section class="notices section">
@@ -174,9 +195,7 @@
         </section>
     </main>
 
-    <!-- <div id="bottomNav"> -->
-    <iframe id="bottomNav" src="/bottomNav.html"></iframe>
-    <!-- </div> -->
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -191,111 +210,76 @@
 
     <script src="/main.js"></script>
     <script>
-        const trendInfo = document.getElementById('trendInfo');
-        let currentSlide = 0;
-        let chartInstance = null;
-        let slideData = []; // This will hold the data for each slide
-    
-       
-        // Fetch past occupancy data from Firestore
-        async function getOccupancyData(collection, date) {
-            const snapshot = await firebase.firestore().collection(collection)
-                .where('date', '==', date)
-                .orderBy('time')
-                .get();
-    
-            return snapshot.docs.map(doc => doc.data());
-        }
-    
-        // Format date to YYYY-MM-DD
-        function formatDate(date) {
-            return date.toISOString().split('T')[0];
-        }
-    
-        // Load data from Firestore for all slides
-        async function loadData() {
-            const today = new Date();
-            const lastWeek = new Date();
-            lastWeek.setDate(today.getDate() - 7);
-    
-            for (const slide of slides) {
-                const todayData = await getOccupancyData(slide.collection, formatDate(today));
-                const lastWeekData = await getOccupancyData(slide.collection, formatDate(lastWeek));
-    
-                // Store the fetched data in slideData array
-                slideData.push({
-                    labels: todayData.map(entry => entry.time),
-                    todayOccupancy: todayData.map(entry => entry.occupied),
-                    lastWeekOccupancy: lastWeekData.map(entry => entry.occupied),
-                    availability: slide.totalSpots - (todayData[todayData.length - 1]?.occupied || 0)
+        document.addEventListener("DOMContentLoaded", function () {
+            sessionStorage.clear();
+            parkSmart.updateRule();
+            parkSmart.parkLotManager.getInfoForMain(updateIndexPageView);
+
+        });
+
+        function updateIndexPageView() {
+            const studentLotsListElement = document.getElementById("studentParkingLotsList");
+            const fsLotsListElement = document.getElementById("FSParkingLotsList");
+
+            studentLotsListElement.innerHTML = '';
+            fsLotsListElement.innerHTML = '';
+
+            let studentAvailableSpots = 0;
+
+            // Append available student lots
+            if (parkSmart.parkLotManager.studentLotsWithAvailability && parkSmart.parkLotManager.studentLotsWithAvailability.length != 0) {
+                parkSmart.parkLotManager.studentLotsWithAvailability.forEach(lot => {
+                    const lotElement = document.createElement("div");
+                    studentAvailableSpots += parseInt(lot[parkSmart.FB_Key_ParkLot_Status_status_availability]);
+                    lotElement.textContent = `${lot[parkSmart.FB_Key_ParkLot_Info_name]} - ${lot[parkSmart.FB_Key_ParkLot_Status_status_availability]} available`;
+                    studentLotsListElement.appendChild(lotElement);
                 });
             }
-    
-            // Start the chart rotation
-            updateTrendSection();
-            setInterval(updateTrendSection, 5000);
-        }
-    
-        function updateTrendSection() {
-            const slide = slides[currentSlide];
-            const data = slideData[currentSlide];
-    
-            trendInfo.innerHTML = `
-                <div>
-                    <p>${slide.time} | ${slide.location}</p>
-                    <p>${data.availability} Available | Occupied: ${slide.totalSpots - data.availability}</p>
-                </div>
-                <canvas id="${slide.id}"></canvas>
-            `;
-    
-            const ctx = document.getElementById(slide.id).getContext('2d');
-    
-            // Destroy previous chart instance if exists
-            if (chartInstance) {
-                chartInstance.destroy();
+            else {
+                const lotElement = document.createElement("div");
+                lotElement.textContent = "No Availability";
+                fsLotsListElement.appendChild(lotElement);
             }
-    
-            // Create new chart
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.labels,
-                    datasets: [
-                        {
-                            label: 'Today',
-                            data: data.todayOccupancy,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 2,
-                            fill: false
-                        },
-                        {
-                            label: 'Same Day Last Week',
-                            data: data.lastWeekOccupancy,
-                            borderColor: 'rgba(153, 102, 255, 1)',
-                            borderWidth: 2,
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: slide.totalSpots
-                        }
-                    }
-                }
-            });
-    
-            currentSlide = (currentSlide + 1) % slides.length;
+
+
+            let fsAvailableSpots = 0;
+            // Append available FS lots
+            if (parkSmart.parkLotManager.fslotsWithAvailability && parkSmart.parkLotManager.fslotsWithAvailability.length != 0) {
+                parkSmart.parkLotManager.fslotsWithAvailability.forEach(lot => {
+                    const lotElement = document.createElement("div");
+                    fsAvailableSpots += parseInt(lot[parkSmart.FB_Key_ParkLot_Status_status_availability]);
+                    lotElement.textContent = `${lot[parkSmart.FB_Key_ParkLot_Info_name]} - ${lot[parkSmart.FB_Key_ParkLot_Status_status_availability]} available `;
+                    fsLotsListElement.appendChild(lotElement);
+                });
+            }
+            else {
+                const lotElement = document.createElement("div");
+                lotElement.textContent = "No Availability";
+                fsLotsListElement.appendChild(lotElement);
+            }
+
+            let fsTotalSpots = parkSmart.parkLotManager.fsTotalSpots;
+            let studentTotalSpots = parkSmart.parkLotManager.studentTotalSpots;
+
+            if (fsTotalSpots > 0 && studentTotalSpots > 0) {
+                let fsPer = (fsAvailableSpots / fsTotalSpots) * 100;
+                let stuPer = (studentAvailableSpots / studentTotalSpots) * 100;
+
+                document.getElementById('studentAvailableSpotsPercentenge').innerHTML = `${stuPer.toFixed(2)}%`;
+                document.getElementById('fsAvailableSpotsPercentenge').innerHTML = `${fsPer.toFixed(2)}%`;
+            } else {
+                // Handle the case where total spots are zero or undefined
+                document.getElementById('studentAvailableSpotsPercentenge').innerHTML = "N/A";
+                document.getElementById('fsAvailableSpotsPercentenge').innerHTML = "N/A";
+            }
+
+
         }
-    
-        // Load data on page load
-        loadData();
     </script>
-    
-    
+
+
 
 </body>
+<div id="bottomNavContainer"></div>
 
 </html>

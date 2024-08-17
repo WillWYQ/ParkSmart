@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="../main.css">
     <link rel="stylesheet" href="../account/account.css">
     <style>
-        
 
-        
+
+
     </style>
 
     <header class="navbar" id="headNav">
@@ -25,7 +25,7 @@
     <div class="page-container">
         <div class="page-subheader">
             <a class="back-link" href="/account/myAccount.html"><i class="fas fa-arrow-left"></i> My Account</a>
-            <h2 class="centered-heading">Account Settings</h1>
+            <h2 >Account Settings</h2>
         </div>
 
         <div class="account-info">
@@ -38,29 +38,49 @@
 
         <ul class="list-group account-list">
             <li class="list-group-item">
-                <div>
+                <div class="a" data-bs-toggle="modal" data-bs-target="#updateProfilePicModal">
                     <i class="fas fa-camera"></i>
                     Update Profile Pic
                 </div>
             </li>
             <li class="list-group-item">
-                <div>
-                    <i class="fas fa-bell"></i>
+                <div><i class="fas fa-bell"></i>
                     Notifications
                 </div>
             </li>
             <li class="list-group-item">
-                <div>
-                    <i class="fas fa-cog"></i>
+                <div><i class="fas fa-cog"></i>
                     Parking Preference
                 </div>
             </li>
         </ul>
-        
-    </div>
 
-    <iframe src="/bottomNav.html"
-        style="width:100%; border:none; position: fixed; bottom: 0; left: 0;"></iframe>
+    </div>
+    <div class="modal fade" id="updateProfilePicModal" tabindex="-1" aria-labelledby="updateProfilePicModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="updateProfilePicModalLabel">Update Profile Picture</h1><button
+                        type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profilePicForm">
+                        <div class="mb-3">
+                            <label for="profile-pic-url" class="col-form-label">Profile Picture
+                                URL:</label>
+                            <input type="url" class="form-control" id="profile-pic-url"
+                                placeholder="Enter the link to your new profile picture" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveProfilePicButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -74,6 +94,41 @@
 
     <script src="/main.js"></script>
     <script src="/account/accountSetting.js"></script>
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!parkSmart.authManager) {
+                parkSmart.authManager = new parkSmart.AuthManager();
+            }
+
+            const accountPageManager = new parkSmart.EditAccountPageManager();
+
+            parkSmart.authManager.beginListening(() => {
+                console.log("isSignedIn = ", parkSmart.authManager.isSignedIn);
+                parkSmart.pageRedirects();
+                accountPageManager.updateView();
+            });
+
+            document.querySelector("#saveProfilePicButton").addEventListener('click', function () {
+                const profilePicUrl = document.getElementById('profile-pic-url').value;
+                console.log("URL:", profilePicUrl);
+                if (profilePicUrl) {
+                    parkSmart.authManager.updateProfilePic(profilePicUrl).then(() => {
+                        const modalElement = document.querySelector("#updateProfilePicModal");
+                        const modal = bootstrap.Modal.getInstance(modalElement);
+                        modal.hide();
+                    });
+                } else {
+                    alert('Please enter a valid URL.');
+                }
+            });
+        });
+
+
+    </script>
+
 </body>
 
 </html>
